@@ -28,10 +28,10 @@ public class InformationServiceImpl implements InformationService {
         switch (relationShip) {
             case SON: return findChild(personName, MALE);
             case DAUGHTER: return findChild(personName, FEMALE);
-            case PATERNAL_UNCLE: return findFathersSibling(personName, PATERNAL, MALE);
-            case PATERNAL_AUNT: return findFathersSibling(personName, PATERNAL, FEMALE);
-            case MATERNAL_UNCLE: return findFathersSibling(personName, MATERNAL, MALE);
-            case MATERNAL_AUNT: return findFathersSibling(personName, MATERNAL, FEMALE);
+            case PATERNAL_UNCLE: return findParentsSibling(personName, PATERNAL, MALE);
+            case PATERNAL_AUNT: return findParentsSibling(personName, PATERNAL, FEMALE);
+            case MATERNAL_UNCLE: return findParentsSibling(personName, MATERNAL, MALE);
+            case MATERNAL_AUNT: return findParentsSibling(personName, MATERNAL, FEMALE);
             case SIBLINGS: return findSiblings(personName, null);
             case SISTER_IN_LAW: return findSiblingInLaw(personName, FEMALE);
             case BROTHER_IN_LAW: return findSiblingInLaw(personName, MALE);
@@ -54,9 +54,9 @@ public class InformationServiceImpl implements InformationService {
         return findSiblings(person.getSpouse(), gender);
     }
 
-    private List<Person> findFathersSibling(String personName, ParentSide uncleType, Gender gender) {
+    private List<Person> findParentsSibling(String personName, ParentSide parentSide, Gender gender) {
         Person person = daoService.findPersonByName(personName);
-        String parentName = PATERNAL.equals(uncleType) ? person.getFathersName() : person.getMothersName();
+        String parentName = PATERNAL.equals(parentSide) ? person.getFathersName() : person.getMothersName();
         List<Person> parentsSiblings = daoService.getSiblingsByFather(parentName);
         return parentsSiblings.stream().filter(p -> gender.equals(p.getGender())).collect(Collectors.toList());
     }
