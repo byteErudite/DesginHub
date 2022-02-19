@@ -19,7 +19,6 @@ public class BuilderImpl {
                 .build();
         System.out.println("Created automobile with info : "+tesla.getInfo());
     }
-
 }
 
 class Automobile {
